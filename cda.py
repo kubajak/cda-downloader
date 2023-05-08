@@ -15,7 +15,10 @@ def download_link(link, folder_name):
         os.makedirs(folder_name)
 
     # pobranie filmu i zapisanie go w nowym folderze
-    subprocess.run(['yt-dlp.exe', '-o', f'{folder_name}/%(title)s.%(ext)s', 'https://www.cda.pl' + link])
+    try:
+        subprocess.run(['yt-dlp.exe', '-o', f'{folder_name}/%(title)s.%(ext)s', 'https://www.cda.pl' + link])
+    except Exception as e:
+        print(f'Error downloading video: {e}')
 
 if __name__ == '__main__':
     # pobranie linku do folderu od użytkownika
