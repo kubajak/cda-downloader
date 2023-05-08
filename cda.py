@@ -5,6 +5,10 @@ from bs4 import BeautifulSoup
 import subprocess
 from datetime import datetime
 
+if not os.path.exists('yt-dlp.exe'):
+    print('Downloading yt-dlp...')
+    subprocess.run(['curl', '-L', 'https://github.com/yt-dlp/yt-dlp/releases/latest/download/yt-dlp.exe', '-o', 'yt-dlp.exe'])
+
 def download_link(link, folder_name):
     # utworzenie nowego folderu, jeśli nie istnieje
     if not os.path.exists(folder_name):
@@ -15,7 +19,7 @@ def download_link(link, folder_name):
 
 if __name__ == '__main__':
     # pobranie linku do folderu od użytkownika
-    user_link = str(input("Podaj link: "))
+    user_link = str(input("Podaj link do folderu: "))
     
     try:
         page = requests.get(user_link)
