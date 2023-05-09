@@ -6,7 +6,7 @@ import subprocess
 from datetime import datetime
 import threading
 
-    # pobieranie yt-dlp jeśli nie zostanie znaleźony
+# pobieranie yt-dlp jeśli nie zostanie znaleźony
 if not os.path.exists('yt-dlp.exe'):
     print('Downloading yt-dlp...')
     subprocess.run(['curl', '-L', 'https://github.com/yt-dlp/yt-dlp/releases/latest/download/yt-dlp.exe', '-o', 'yt-dlp.exe'])
@@ -25,7 +25,11 @@ def download_link(link, folder_name):
 if __name__ == '__main__':
     # pobranie linku do folderu od użytkownika
     user_link = str(input("Podaj link do folderu: "))
-    
+        # sprawdzenie czy podany link pochodzi z cda.pl i ponowne pytanie o link jeśli nie jest z cda.pl
+    while not user_link.startswith('https://www.cda.pl'):
+        print("Podany link nie jest z cda.pl")
+        user_link = str(input("Podaj link do folderu: "))
+
     try:
         page = requests.get(user_link)
     except requests.exceptions.RequestException as e:
