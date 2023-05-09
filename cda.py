@@ -4,6 +4,7 @@ import requests
 from bs4 import BeautifulSoup
 import subprocess
 from datetime import datetime
+import threading
 
 if not os.path.exists('yt-dlp.exe'):
     print('Downloading yt-dlp...')
@@ -39,6 +40,9 @@ if __name__ == '__main__':
         if href and href.startswith('/video/'):
             links.append(href)
 
+    # usunięcie duplikatów z listy links
+    links = list(dict.fromkeys(links))
+
     # pobranie nazwy folderu od użytkownika
     folder_name = str(input("Podaj nazwę folderu (lub zostaw puste dla domyślnej nazwy): ")).strip()
 
@@ -49,5 +53,12 @@ if __name__ == '__main__':
         folder_name = f'pobrane_filmy_{date_time}'
 
     # pobranie każdego filmu po kolei
+    threads = []
     for link in links:
-        download_link(link, folder_name)
+        t = threading.Thread(target=download_link, args=(link, folder_name))
+        t.start()
+        threads.append(t)
+
+    # oczekiwanie na zakończenie wszystkich wątków
+    for t in threads:
+        t.join()
