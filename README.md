@@ -8,7 +8,7 @@
     <p>Ten skrypt umożliwia pobieranie filmów z serwisu CDA.pl.</p>
     <h2>Jak korzystać z tego skryptu?</h2>
     <ol>
-        <li>Pobierz: https://github.com/kubajak/cda-downloader/archive/refs/heads/main.zip</li>
+        <li>Pobierz i rozpakuj: https://github.com/kubajak/cda-downloader/archive/refs/heads/main.zip</li>
         <li>python cda.py</li>
         <li>Podaj link do folderu użytkownika na CDA.pl.</li>
         <li>Skrypt pobierze linki do filmów i rozpocznie pobieranie każdego filmu po kolei.</li>
