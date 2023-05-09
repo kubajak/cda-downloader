@@ -6,6 +6,7 @@ import subprocess
 from datetime import datetime
 import threading
 
+    # pobieranie yt-dlp jeśli nie zostanie znaleźony
 if not os.path.exists('yt-dlp.exe'):
     print('Downloading yt-dlp...')
     subprocess.run(['curl', '-L', 'https://github.com/yt-dlp/yt-dlp/releases/latest/download/yt-dlp.exe', '-o', 'yt-dlp.exe'])
