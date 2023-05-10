@@ -36,7 +36,7 @@ def pobierz_film(link, nazwa_katalogu):
 def pobierz_link_uzytkownika():
     """Pobierz link do katalogu od użytkownika."""
     link_uzytkownika = str(input("Podaj link do katalogu: "))
-    # Sprawdź czy podany link pochodzi z cda.pl i ponownie pytaj o link jeśli nie jest z cda.pl
+    """Sprawdź czy podany link pochodzi z cda.pl i ponownie pytaj o link jeśli nie jest z cda.pl"""
     while not link_uzytkownika.startswith('https://www.cda.pl'):
         print("Podany link nie jest z cda.pl")
         link_uzytkownika = str(input("Podaj link do katalogu: "))
@@ -59,14 +59,14 @@ def pobierz_linki_do_filmow(zawartosc_strony):
         href = link.get('href')
         if href and href.startswith('/video/'):
             linki.append(href)
-    # Usuń duplikaty z listy linków
+    """Usuń duplikaty z listy linków"""
     linki = list(dict.fromkeys(linki))
     return linki
 
 def pobierz_nazwe_katalogu():
     """Pobierz nazwę katalogu od użytkownika."""
     nazwa_katalogu = str(input("Podaj nazwę katalogu (lub zostaw puste dla domyślnej nazwy): ")).strip()
-    # Użyj domyślnej nazwy katalogu jeśli użytkownik nie podał nazwy
+    """Użyj domyślnej nazwy katalogu jeśli użytkownik nie podał nazwy"""
     if not nazwa_katalogu:
         teraz = datetime.now()
         data_czas = teraz.strftime("%Y-%m-%d_%H-%M-%S")
@@ -80,7 +80,7 @@ def pobierz_filmy(linki, nazwa_katalogu):
         t = threading.Thread(target=pobierz_film, args=(link, nazwa_katalogu))
         t.start()
         watki.append(t)
-    # Poczekaj na zakończenie wszystkich wątków
+    """Poczekaj na zakończenie wszystkich wątków"""
     for t in watki:
         t.join()
 
