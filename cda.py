@@ -35,11 +35,11 @@ def pobierz_film(link, nazwa_katalogu):
 
 def pobierz_link_uzytkownika():
     """Pobierz link do katalogu od użytkownika."""
-    link_uzytkownika = str(input("Podaj link do katalogu: "))
+    link_uzytkownika = str(input("Podaj link do folderu: "))
     """Sprawdź czy podany link pochodzi z cda.pl i ponownie pytaj o link jeśli nie jest z cda.pl"""
     while not link_uzytkownika.startswith('https://www.cda.pl'):
         print("Podany link nie jest z cda.pl")
-        link_uzytkownika = str(input("Podaj link do katalogu: "))
+        link_uzytkownika = str(input("Podaj link do folderu: "))
     return link_uzytkownika
 
 def pobierz_zawartosc_strony(link_uzytkownika):
