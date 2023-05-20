@@ -6,6 +6,7 @@ import subprocess
 from datetime import datetime
 import threading
 import signal
+from queue import Queue
 
 def pobierz_ytdlp():
     #Pobierz yt-dlp jeśli nie zostanie znaleziony.
@@ -96,7 +97,6 @@ def wybierz_liczbe_pobieran():
 
 
 def pobierz_filmy(linki, nazwa_katalogu):
-    # Pobierz każdy film po kolei.
     def signal_handler(sig, frame):
         print('Przerywanie pobierania filmów...')
         for t in watki:
@@ -108,14 +108,23 @@ def pobierz_filmy(linki, nazwa_katalogu):
     jakosc = wybierz_jakosc()
     liczba_pobieran = wybierz_liczbe_pobieran()
     watki = []
+    q = Queue()
     for link in linki:
-        t = threading.Thread(target=pobierz_film, args=(link, nazwa_katalogu, jakosc))
+        q.put(link)
+
+    def pobierz_film_z_kolejki():
+        while not q.empty():
+            link = q.get()
+            pobierz_film(link, nazwa_katalogu, jakosc)
+            q.task_done()
+
+    for i in range(liczba_pobieran):
+        t = threading.Thread(target=pobierz_film_z_kolejki)
         t.start()
         watki.append(t)
-        if len(watki) >= liczba_pobieran:
-            for t in watki:
-                t.join()
-            watki = []
+
+    q.join()
+
     # Poczekaj na zakończenie wszystkich wątków
     for t in watki:
         t.join()
