@@ -4,10 +4,7 @@
     <meta charset="UTF-8">
 </head>
 <body>
-    <h1>Pobieranie filmów z serwisu CDA.pl</h1>
-    <p>Ten skrypt umożliwia pobieranie filmów z serwisu CDA.pl.</p>
-    <h2>Jak korzystać z tego skryptu?</h2>
-    <h2>Wymagania</h2>
+    <h1>Pobieranie całych folderów z serwisu CDA.pl</h1>
     <p>Wykorzystywane biblioteki:</p>
     <ul>
         <li>requests</li>
