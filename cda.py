@@ -31,9 +31,12 @@ def utworz_katalog(nazwa_katalogu):
 def pobierz_film(link, nazwa_katalogu, jakosc):
     #Pobierz film i zapisz go w nowym katalogu.
     try:
-        subprocess.run(['yt-dlp.exe', '-f', f'bestvideo[height<=?{jakosc}]+bestaudio/best[height<=?{jakosc}]', '-o', f'{nazwa_katalogu}/%(title)s.%(ext)s', 'https://www.cda.pl' + link])
+        if link.startswith('/video/'):
+            link = 'https://www.cda.pl' + link
+        subprocess.run(['yt-dlp.exe', '-f', f'bestvideo[height<=?{jakosc}]+bestaudio/best[height<=?{jakosc}]', '-o', f'{nazwa_katalogu}/%(title)s.%(ext)s', link])
     except Exception as e:
         print(f'Błąd podczas pobierania filmu: {e}')
+
 
 def wybierz_jakosc():
     #Pozwól użytkownikowi wybrać jakość pobranego filmu.
@@ -45,12 +48,12 @@ def wybierz_jakosc():
 
 def pobierz_link_uzytkownika():
     #Pobierz link do katalogu od użytkownika.
-    link_uzytkownika = str(input("Podaj link do katalogu: "))
+    link_uzytkownika = str(input("Podaj link do filmu lub katalogu: "))
     
     #Sprawdź czy podany link pochodzi z cda.pl i ponownie pytaj o link jeśli nie jest z cda.pl
     while not link_uzytkownika.startswith('https://www.cda.pl'):
         print("Podany link nie jest z cda.pl")
-        link_uzytkownika = str(input("Podaj link do katalogu: "))
+        link_uzytkownika = str(input("Podaj link do filmu lub katalogu: "))
     return link_uzytkownika
 
 def pobierz_zawartosc_strony(link_uzytkownika):
@@ -134,10 +137,14 @@ if __name__ == '__main__':
     pobierz_ytdlp()
     
     link_uzytkownika = pobierz_link_uzytkownika()
+
+    if '/video/' in link_uzytkownika:
+        # If the user entered a single video link
+        linki = [link_uzytkownika]
+    else:
+        zawartosc_strony = pobierz_zawartosc_strony(link_uzytkownika)
     
-    zawartosc_strony = pobierz_zawartosc_strony(link_uzytkownika)
-    
-    linki = pobierz_linki_do_filmow(zawartosc_strony)
+        linki = pobierz_linki_do_filmow(zawartosc_strony)
     
     nazwa_katalogu = pobierz_nazwe_katalogu()
     
