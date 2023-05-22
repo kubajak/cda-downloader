@@ -18,34 +18,6 @@ def pobierz_ytdlp():
             print(f'Błąd podczas pobierania yt-dlp: {e}')
             sys.exit(1)
 
-def utworz_katalog(nazwa_katalogu):
-    #Utwórz nowy katalog jeśli nie istnieje.
-    try:
-        if not os.path.exists(nazwa_katalogu):
-            os.makedirs(nazwa_katalogu)
-    except OSError as e:
-        print(f'Błąd podczas tworzenia katalogu: {e}')
-        return False
-    return True
-
-def pobierz_film(link, nazwa_katalogu, jakosc):
-    #Pobierz film i zapisz go w nowym katalogu.
-    try:
-        if link.startswith('/video/'):
-            link = 'https://www.cda.pl' + link
-        subprocess.run(['yt-dlp.exe', '-f', f'bestvideo[height<=?{jakosc}]+bestaudio/best[height<=?{jakosc}]', '-o', f'{nazwa_katalogu}/%(title)s.%(ext)s', link])
-    except Exception as e:
-        print(f'Błąd podczas pobierania filmu: {e}')
-
-
-def wybierz_jakosc():
-    #Pozwól użytkownikowi wybrać jakość pobranego filmu.
-    jakosc = input("Wybierz jakość pobranego filmu (480p, 720p lub 1080p): ")
-    while jakosc not in ['480p', '720p', '1080p']:
-        print("Niepoprawna jakość. Wybierz ponownie.")
-        jakosc = input("Wybierz jakość pobranego filmu (480p, 720p lub 1080p): ")
-    return jakosc
-
 def pobierz_link_uzytkownika():
     #Pobierz link do katalogu od użytkownika.
     link_uzytkownika = str(input("Podaj link do filmu lub katalogu: "))
@@ -87,6 +59,24 @@ def pobierz_nazwe_katalogu():
         nazwa_katalogu = f'pobrane_filmy_{data_czas}'
     return nazwa_katalogu
 
+def utworz_katalog(nazwa_katalogu):
+    #Utwórz nowy katalog jeśli nie istnieje.
+    try:
+        if not os.path.exists(nazwa_katalogu):
+            os.makedirs(nazwa_katalogu)
+    except OSError as e:
+        print(f'Błąd podczas tworzenia katalogu: {e}')
+        return False
+    return True
+
+def wybierz_jakosc():
+    #Pozwól użytkownikowi wybrać jakość pobranego filmu.
+    jakosc = input("Wybierz jakość pobranego filmu (480p, 720p lub 1080p): ")
+    while jakosc not in ['480p', '720p', '1080p']:
+        print("Niepoprawna jakość. Wybierz ponownie.")
+        jakosc = input("Wybierz jakość pobranego filmu (480p, 720p lub 1080p): ")
+    return jakosc
+
 def wybierz_liczbe_pobieran():
     # Pozwól użytkownikowi wybrać liczbę jednoczesnych pobierań filmów.
     liczba_pobieran = input("Wybierz liczbę jednoczesnych pobierań filmów (lub wpisz 'max' dla pobierania wszystkich na raz): ")
@@ -98,6 +88,14 @@ def wybierz_liczbe_pobieran():
     else:
         return int(liczba_pobieran)
 
+def pobierz_film(link, nazwa_katalogu, jakosc):
+    #Pobierz film i zapisz go w nowym katalogu.
+    try:
+        if link.startswith('/video/'):
+            link = 'https://www.cda.pl' + link
+        subprocess.run(['yt-dlp.exe', '-f', f'bestvideo[height<=?{jakosc}]+bestaudio/best[height<=?{jakosc}]', '-o', f'{nazwa_katalogu}/%(title)s.%(ext)s', link])
+    except Exception as e:
+        print(f'Błąd podczas pobierania filmu: {e}')
 
 def pobierz_filmy(linki, nazwa_katalogu):
     def signal_handler(sig, frame):
